@@ -65,7 +65,7 @@
         "ImageProxyURL": ""
     },
     "TeamSettings": {
-        "SiteName": "Mattermost",
+        "SiteName": "ZeroChat",
         "MaxUsersPerTeam": 50,
         "EnableTeamCreation": true,
         "EnableUserCreation": true,
@@ -213,7 +213,7 @@
         "EnableThemeSelection": true,
         "DefaultTheme": "default",
         "AllowCustomThemes": true,
-        "AllowedThemes": []
+        "AllowedThemes": ["default"]
     },
     "TimezoneSettings": {
         "SupportedTimezonesPath": "timezones.json"
