@@ -92,6 +92,11 @@ func updateChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !c.App.SessionHasPermissionToTeam(c.Session, channel.TeamId, model.PERMISSION_MANAGE_TEAM) {
+		c.SetPermissionError(model.PERMISSION_MANAGE_TEAM)
+		return
+	}
+
 	var oldChannel *model.Channel
 	var err *model.AppError
 	if oldChannel, err = c.App.GetChannel(channel.Id); err != nil {
@@ -205,6 +210,11 @@ func patchChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 	oldChannel, err := c.App.GetChannel(c.Params.ChannelId)
 	if err != nil {
 		c.Err = err
+		return
+	}
+
+	if oldChannel.Type != model.CHANNEL_DIRECT && !c.App.SessionHasPermissionToTeam(c.Session, oldChannel.TeamId, model.PERMISSION_MANAGE_TEAM) {
+		c.SetPermissionError(model.PERMISSION_MANAGE_TEAM)
 		return
 	}
 
@@ -594,6 +604,11 @@ func deleteChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if !c.App.SessionHasPermissionToTeam(c.Session, channel.TeamId, model.PERMISSION_MANAGE_TEAM) {
+		c.SetPermissionError(model.PERMISSION_MANAGE_TEAM)
+		return
+	}
+
 	if channel.Type == model.CHANNEL_OPEN && !c.App.SessionHasPermissionToChannel(c.Session, channel.Id, model.PERMISSION_DELETE_PUBLIC_CHANNEL) {
 		c.SetPermissionError(model.PERMISSION_DELETE_PUBLIC_CHANNEL)
 		return
@@ -796,6 +811,18 @@ func updateChannelMemberRoles(c *Context, w http.ResponseWriter, r *http.Request
 
 	props := model.MapFromJson(r.Body)
 
+	var channel *model.Channel
+	var err *model.AppError
+	if channel, err = c.App.GetChannel(c.Params.ChannelId); err != nil {
+		c.Err = err
+		return
+	}
+
+	if !c.App.SessionHasPermissionToTeam(c.Session, channel.TeamId, model.PERMISSION_MANAGE_TEAM) {
+		c.SetPermissionError(model.PERMISSION_MANAGE_TEAM)
+		return
+	}
+
 	newRoles := props["roles"]
 	if !(model.IsValidUserRoles(newRoles)) {
 		c.SetInvalidParam("roles")
@@ -824,6 +851,18 @@ func updateChannelMemberNotifyProps(c *Context, w http.ResponseWriter, r *http.R
 	props := model.MapFromJson(r.Body)
 	if props == nil {
 		c.SetInvalidParam("notify_props")
+		return
+	}
+
+	var channel *model.Channel
+	var channelErr *model.AppError
+	if channel, channelErr = c.App.GetChannel(c.Params.ChannelId); channelErr != nil {
+		c.Err = channelErr
+		return
+	}
+
+	if !c.App.SessionHasPermissionToTeam(c.Session, channel.TeamId, model.PERMISSION_MANAGE_TEAM) {
+		c.SetPermissionError(model.PERMISSION_MANAGE_TEAM)
 		return
 	}
 
@@ -927,6 +966,11 @@ func removeChannelMember(c *Context, w http.ResponseWriter, r *http.Request) {
 	var err *model.AppError
 	if channel, err = c.App.GetChannel(c.Params.ChannelId); err != nil {
 		c.Err = err
+		return
+	}
+
+	if !c.App.SessionHasPermissionToTeam(c.Session, channel.TeamId, model.PERMISSION_MANAGE_TEAM) {
+		c.SetPermissionError(model.PERMISSION_MANAGE_TEAM)
 		return
 	}
 
