@@ -33,6 +33,7 @@ const (
 	PASSWORD_MINIMUM_LENGTH = 5
 
 	SERVICE_GITLAB    = "gitlab"
+	SERVICE_IYO       = "itsyouonline"
 	SERVICE_GOOGLE    = "google"
 	SERVICE_OFFICE365 = "office365"
 
@@ -1773,6 +1774,7 @@ type Config struct {
 	AnnouncementSettings  AnnouncementSettings
 	ThemeSettings         ThemeSettings
 	GitLabSettings        SSOSettings
+	IyoSettings           SSOSettings
 	GoogleSettings        SSOSettings
 	Office365Settings     SSOSettings
 	LdapSettings          LdapSettings
@@ -1810,6 +1812,8 @@ func (o *Config) GetSSOService(service string) *SSOSettings {
 	switch service {
 	case SERVICE_GITLAB:
 		return &o.GitLabSettings
+	case SERVICE_IYO:
+		return &o.IyoSettings
 	case SERVICE_GOOGLE:
 		return &o.GoogleSettings
 	case SERVICE_OFFICE365:
@@ -2338,6 +2342,10 @@ func (o *Config) Sanitize() {
 
 	if len(o.GitLabSettings.Secret) > 0 {
 		o.GitLabSettings.Secret = FAKE_SETTING
+	}
+
+	if len(o.IyoSettings.Secret) > 0 {
+		o.IyoSettings.Secret = FAKE_SETTING
 	}
 
 	*o.SqlSettings.DataSource = FAKE_SETTING

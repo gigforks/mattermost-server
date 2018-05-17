@@ -708,11 +708,20 @@ func (a *App) AuthorizeOAuthUser(w http.ResponseWriter, r *http.Request, service
 
 	p = url.Values{}
 	p.Set("access_token", ar.AccessToken)
-	req, _ = http.NewRequest("GET", sso.UserApiEndpoint, strings.NewReader(""))
+	// Format user profile api url if using itsyou.online
+	userEndPoint := sso.UserApiEndpoint
+	if ar.Info != (model.AccessResponseInfo{}) {
+		userEndPoint = fmt.Sprintf(sso.UserApiEndpoint, ar.Info.UserName)
+	}
+	req, _ = http.NewRequest("GET", userEndPoint, strings.NewReader(""))
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", "Bearer "+ar.AccessToken)
+	if ar.Info != (model.AccessResponseInfo{}) {
+		req.Header.Set("Authorization", "token "+ar.AccessToken)
+	} else {
+		req.Header.Set("Authorization", "Bearer "+ar.AccessToken)
+	}
 
 	if resp, err := a.HTTPClient(true).Do(req); err != nil {
 		return nil, "", stateProps, model.NewAppError("AuthorizeOAuthUser", "api.user.authorize_oauth_user.service.app_error", map[string]interface{}{"Service": service}, err.Error(), http.StatusInternalServerError)

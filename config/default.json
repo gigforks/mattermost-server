@@ -228,6 +228,15 @@
         "TokenEndpoint": "",
         "UserApiEndpoint": ""
     },
+    "IyoSettings": {
+        "Enable": false,
+        "Secret": "",
+        "Id": "",
+        "Scope": "user:name,user:email",
+        "AuthEndpoint": "https://itsyou.online/v1/oauth/authorize",
+        "TokenEndpoint": "https://itsyou.online/v1/oauth/access_token",
+        "UserApiEndpoint": "https://itsyou.online/api/users/%s/info"
+    },
     "GoogleSettings": {
         "Enable": false,
         "Secret": "",
