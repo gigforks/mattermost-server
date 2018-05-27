@@ -159,7 +159,7 @@
         "EnableSignInWithUsername": true,
         "SendEmailNotifications": true,
         "UseChannelInEmailNotifications": false,
-        "RequireEmailVerification": true,
+        "RequireEmailVerification": false,
         "FeedbackName": "Support",
         "FeedbackEmail": "support@chat.grid.tf",
         "FeedbackOrganization": "",
