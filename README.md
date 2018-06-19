@@ -1,9 +1,8 @@
 # Prefab Mattermost Installing
-- you need to have jumpscale installed follow this docs https://github.com/Jumpscale/bash
+- you need to have jumpscale installed follow this docs https://github.com/Jumpscale/bash to start installation from it on a remote machine
 
 - please choose a machine that have at least 2 GB of RAM
-to install prefab on a remote machine 
-then type `js9`
+- to install mattermost on a remote machine type `js9`
 
 ```
 prefab = j.tools.prefab.getFromSSH("<machine_ip>", '<ssh_port>')
